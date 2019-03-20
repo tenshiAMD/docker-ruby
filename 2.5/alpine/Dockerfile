@@ -14,7 +14,6 @@ RUN apk update && apk --no-cache add  nodejs-current && echo "NodeJS $(node --ve
 RUN apk update && apk --no-cache add  nodejs-current-npm && echo "NPM $(npm --version) has been installed."
 
 ## Installs Yarn
-RUN echo -e 'http://dl-cdn.alpinelinux.org/alpine/edge/main\nhttp://dl-cdn.alpinelinux.org/alpine/edge/community\nhttp://dl-cdn.alpinelinux.org/alpine/edge/testing' > /etc/apk/repositories
 RUN apk update && apk --no-cache add yarn && echo "Yarn $(yarn --version) has been installed."
 
 ## Installs MySQL Client
@@ -24,10 +23,13 @@ RUN apk update && apk --no-cache add mysql-client && echo "MySQL Client $(mysql 
 RUN apk update && apk --no-cache add postgresql-client && echo "PostgresQL Client $(psql --version) has been installed."
 
 ## Installs utilities
-RUN apk update && apk --no-cache add build-base bash nano git tzdata
+RUN apk update && apk --no-cache add build-base nano git tzdata curl bash
 
 ## Install database essentials
 RUN apk update && apk --no-cache add mysql-dev postgresql-dev sqlite-dev
+
+## Installs Imagemagick
+RUN apk add --no-cache imagemagick imagemagick-dev
 
 COPY ./bin/docker-healthcheck.sh /usr/local/bin/docker-healthcheck.sh
 RUN cd /usr/local/bin && chmod 750 docker-healthcheck.sh
