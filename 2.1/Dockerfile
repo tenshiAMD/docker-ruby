@@ -7,6 +7,9 @@ ENV BUNDLE_GEMFILE $APP_HOME/Gemfile
 ENV BUNDLE_JOBS 3
 ENV BUNDLE_PATH /bundle
 
+RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+
+
 ## Installs NodeJS
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get update -qq && apt-get install -y build-essential nodejs
