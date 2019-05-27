@@ -22,7 +22,7 @@ RUN apk update && apk --no-cache add mysql-dev postgresql-dev sqlite-dev
 COPY ./bin/docker-healthcheck.sh /usr/local/bin/docker-healthcheck.sh
 RUN cd /usr/local/bin && chmod 750 docker-healthcheck.sh
 
-HEALTHCHECK CMD ["docker-healthcheck.sh"]
+HEALTHCHECK --start-period=1m --interval=1m CMD ["docker-healthcheck.sh"]
 
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
