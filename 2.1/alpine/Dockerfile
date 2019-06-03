@@ -26,3 +26,5 @@ HEALTHCHECK --start-period=1m --interval=1m CMD ["docker-healthcheck.sh"]
 
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
+
+EXPOSE 80
