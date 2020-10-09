@@ -7,6 +7,8 @@ ENV BUNDLE_GEMFILE $APP_HOME/Gemfile
 ENV BUNDLE_JOBS 3
 ENV BUNDLE_PATH /bundle
 
+RUN gem install bundler
+
 ## Installs NodeJS
 RUN apk update && apk --no-cache add  nodejs-current && echo "NodeJS $(node --version) has been installed."
 

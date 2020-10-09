@@ -7,6 +7,8 @@ ENV BUNDLE_GEMFILE $APP_HOME/Gemfile
 ENV BUNDLE_JOBS 3
 ENV BUNDLE_PATH /bundle
 
+RUN gem install bundler
+
 ## Installs NodeJS and NPM
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get update -qq && apt-get install -y build-essential nodejs
