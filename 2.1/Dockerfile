@@ -1,4 +1,4 @@
-FROM ruby:2.1
+FROM ruby:2.5
 
 LABEL maintainer="Angel Aviel Domaoan <dev.tenshiamd@gmail.com>"
 
