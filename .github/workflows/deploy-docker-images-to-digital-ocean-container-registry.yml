@@ -1,4 +1,4 @@
-name: Deploy images to DigitalOcean Container Registry
+name: Deploy docker images to DigitalOcean Container Registry
 
 on:
   workflow_dispatch:
@@ -13,7 +13,6 @@ jobs:
         tag:
           - 2.7
           - 2.6
-          - 2.5
     steps:
       - 
         name: Checking out the repository
