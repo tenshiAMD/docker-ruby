@@ -24,13 +24,14 @@ jobs:
         name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.CR_PAT }}
+          token: ${{ secrets.DOCR_PAT }}
       - 
         name: Login to Container Registry
-        run: doctl registry login -t ${{ secrets.CR_PAT }}
+        run: doctl registry login -t ${{ secrets.DOCR_PAT }}
       - 
-        name: Build docker image
-        run: cd ${{ matrix.tag }} && docker build -t registry.digitalocean.com/${{ secrets.CR_ORG }}/ruby:${{ matrix.tag }} .
-      - 
-        name: Push docker image
-        run: docker push registry.digitalocean.com/${{ secrets.CR_ORG }}/ruby:${{ matrix.tag }}
+        name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          push: true
+          context: ./${{ matrix.tag }}
+          tags: registry.digitalocean.com/${{ secrets.DOCR_ORG }}/ruby:${{ matrix.tag }}
