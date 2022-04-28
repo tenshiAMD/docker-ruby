@@ -10,14 +10,14 @@ ENV BUNDLE_PATH /bundle
 RUN gem install bundler
 
 ## Installs NodeJS and NPM
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get update -qq && apt-get install -y build-essential nodejs
 
 ## Installs Yarn
 RUN echo "Installing yarn ..."
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install yarn
+RUN apt-get update -qq && apt-get install -y yarn
 RUN echo "Yarn $(yarn --version) has been installed."
 
 ## Installs database drivers
