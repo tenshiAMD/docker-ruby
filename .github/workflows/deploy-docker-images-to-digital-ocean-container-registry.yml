@@ -12,7 +12,6 @@ jobs:
       matrix:
         tag:
           - 2.7
-          - 2.6
     steps:
       - 
         name: Checking out the repository

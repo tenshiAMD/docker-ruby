@@ -17,7 +17,6 @@ jobs:
       matrix:
         tag:
           - 2.7
-          - 2.6
     steps:
       - 
         name: Check out the repo
