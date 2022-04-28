@@ -1,4 +1,5 @@
-FROM ruby:2.7
+ARG RUBY_BUILD_VERSION
+FROM ruby:$RUBY_BUILD_VERSION
 
 LABEL maintainer="Angel Aviel Domaoan <dev.tenshiamd@gmail.com>"
 

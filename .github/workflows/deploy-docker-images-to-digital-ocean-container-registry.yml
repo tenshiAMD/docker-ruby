@@ -29,8 +29,11 @@ jobs:
         run: doctl registry login -t ${{ secrets.DOCR_PAT }}
       - 
         name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@v2
         with:
+          build-args: |
+            RUBY_BUILD_VERSION=${{ matrix.tag }}
+          context: ./build
           push: true
-          context: ./${{ matrix.tag }}
-          tags: registry.digitalocean.com/${{ secrets.DOCR_ORG }}/ruby:${{ matrix.tag }}
+          tags: |
+            registry.digitalocean.com/${{ secrets.DOCR_ORG }}/ruby:${{ matrix.tag }}
