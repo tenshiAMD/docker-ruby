@@ -9,6 +9,7 @@ ENV BUNDLE_JOBS 3
 ENV BUNDLE_PATH /bundle
 
 RUN gem install bundler
+RUN gem install bundler-audit
 
 ## Installs NodeJS and NPM
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
