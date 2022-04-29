@@ -9,6 +9,7 @@ ENV BUNDLE_JOBS 3
 ENV BUNDLE_PATH /bundle
 
 RUN gem install bundler -v "~>1.0"
+RUN gem install bundler -v "~>2.0"
 RUN gem install bundler-audit
 
 ## Installs NodeJS
