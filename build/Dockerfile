@@ -1,6 +1,8 @@
 ARG RUBY_BUILD_VERSION
 FROM ruby:$RUBY_BUILD_VERSION
 
+LABEL org.opencontainers.image.source "https://github.com/tenshiamd/docker-ruby"
+
 LABEL maintainer="Angel Aviel Domaoan <dev.tenshiamd@gmail.com>"
 
 ENV APP_HOME /var/www
