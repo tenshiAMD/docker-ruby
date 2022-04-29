@@ -8,6 +8,17 @@ on:
     branches:
       - stable
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+env:
+  DOCKERHUB_URL: ${{ secrets.DOCKERHUB_URL }}
+  DOCR_PAT: ${{ secrets.DOCR_PAT }}
+  DOCR_URL: ${{ secrets.DOCR_URL }}
+  GHCR_PAT: ${{ secrets.GHCR_PAT }}
+  GHCR_URL: ${{ secrets.GHCR_URL }}
+
 jobs:
   push_to_registry:
     name: Push Docker image
@@ -30,26 +41,48 @@ jobs:
         name: Check out the repo
         uses: actions/checkout@v2
       - 
+        if: "${{ env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_PAT != '' && env.DOCKERHUB_URL != '' }}"
         name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          password: ${{ secrets.DOCKERHUB_PAT }}
       - 
-        name: Log in to the GitHub Container registry
+        if: "${{ env.GHCR_PAT != '' && env.GHCR_URL != '' }}"
+        name: Add tag for Docker Hub
+        run: echo "DOCKERHUB_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
+        env:
+          DOCKER_TAG: ${{ env.DOCKERHUB_URL }}:${{ matrix.tag }}
+      - 
+        if: "${{ env.GHCR_PAT != '' && env.GHCR_URL != '' }}"
+        name: Log in to the GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
       - 
+        if: "${{ env.GHCR_PAT != '' && env.GHCR_URL != '' }}"
+        name: Add tag for GitHub Container Registry
+        run: echo "GHCR_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
+        env:
+          DOCKER_TAG: ${{ env.GHCR_URL }}:${{ matrix.tag }}
+      - 
+        if: "${{ env.DOCR_PAT != '' && env.DOCR_URL != '' }}"
         name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.DOCR_PAT }}
+          token: ${{ env.DOCR_PAT }}
       - 
+        if: "${{ env.DOCR_PAT != '' && env.DOCR_URL != '' }}"
         name: Login to Digital Ocean Container Registry
-        run: doctl registry login -t ${{ secrets.DOCR_PAT }}
+        run: doctl registry login -t ${{ env.DOCR_PAT }}
+      - 
+        if: "${{ env.DOCR_PAT != '' && env.DOCR_URL != '' }}"
+        name: Add tag for Digital Ocean Container Registry
+        run: echo "DOCR_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
+        env:
+          DOCKER_TAG: ${{ env.DOCR_URL }}:${{ matrix.tag }}
       - 
         name: Build and push Docker image
         uses: docker/build-push-action@v2
@@ -59,6 +92,6 @@ jobs:
           context: ./build
           push: true
           tags: |
-            tenshiamd/ruby:${{ matrix.tag }}
-            ghcr.io/tenshiamd/ruby:${{ matrix.tag }}
-            registry.digitalocean.com/${{ secrets.DOCR_ORG }}/ruby:${{ matrix.tag }}
+            ${{ env.DOCKERHUB_TAG }}
+            ${{ env.DOCR_TAG }}
+            ${{ env.GHCR_TAG }}
