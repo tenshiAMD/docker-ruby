@@ -88,7 +88,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           build-args: |
-            RUBY_BUILD_VERSION=${{ matrix.tag }}
+            RUBY_VERSION=${{ matrix.tag }}
           context: ./build
           push: true
           tags: |
@@ -100,7 +100,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           build-args: |
-            RUBY_BUILD_VERSION=${{ matrix.tag }}
+            RUBY_VERSION=${{ matrix.tag }}
           context: ./build/alpine
           push: true
           tags: |

@@ -1,5 +1,5 @@
-ARG RUBY_BUILD_VERSION
-FROM ruby:$RUBY_BUILD_VERSION
+ARG RUBY_VERSION
+FROM ruby:$RUBY_VERSION
 
 LABEL org.opencontainers.image.source "https://github.com/tenshiamd/docker-ruby"
 

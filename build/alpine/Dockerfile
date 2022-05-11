@@ -1,7 +1,7 @@
-ARG RUBY_BUILD_VERSION
+ARG RUBY_VERSION
 
 FROM node:16-alpine AS node
-FROM ruby:$RUBY_BUILD_VERSION-alpine
+FROM ruby:$RUBY_VERSION-alpine
 
 LABEL org.opencontainers.image.source "https://github.com/tenshiamd/docker-ruby"
 
