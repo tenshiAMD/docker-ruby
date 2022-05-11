@@ -1,4 +1,6 @@
 ARG RUBY_BUILD_VERSION
+
+FROM node:16-alpine AS node
 FROM ruby:$RUBY_BUILD_VERSION-alpine
 
 LABEL org.opencontainers.image.source "https://github.com/tenshiamd/docker-ruby"
@@ -14,10 +16,15 @@ RUN gem install bundler -v "~>1.0"
 RUN gem install bundler-audit
 
 ## Installs NodeJS
-RUN apk update && apk --no-cache add  nodejs-current && echo "NodeJS $(node --version) has been installed."
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/share /usr/local/share
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/include /usr/local/include
+COPY --from=node /usr/local/bin /usr/local/bin
+COPY --from=node /opt /opt
 
 ## Installs NPM
-RUN apk update && apk --no-cache add  nodejs-current-npm && echo "NPM $(npm --version) has been installed."
+RUN apk update && apk --no-cache add npm && echo "NPM $(npm --version) has been installed."
 
 ## Installs Yarn
 RUN apk update && apk --no-cache add yarn && echo "Yarn $(yarn --version) has been installed."

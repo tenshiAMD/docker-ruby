@@ -37,23 +37,23 @@ jobs:
           - tag: "3.1"
             experimental: true
     steps:
-      - 
+      -
         name: Check out the repo
         uses: actions/checkout@v2
-      - 
+      -
         if: "${{ env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_PAT != '' && env.DOCKERHUB_URL != '' }}"
         name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PAT }}
-      - 
+      -
         if: "${{ env.GHCR_PAT != '' && env.GHCR_URL != '' }}"
         name: Add tag for Docker Hub
         run: echo "DOCKERHUB_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
         env:
           DOCKER_TAG: ${{ env.DOCKERHUB_URL }}:${{ matrix.tag }}
-      - 
+      -
         if: "${{ env.GHCR_PAT != '' && env.GHCR_URL != '' }}"
         name: Log in to the GitHub Container Registry
         uses: docker/login-action@v1
@@ -61,29 +61,29 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
-      - 
+      -
         if: "${{ env.GHCR_PAT != '' && env.GHCR_URL != '' }}"
         name: Add tag for GitHub Container Registry
         run: echo "GHCR_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
         env:
           DOCKER_TAG: ${{ env.GHCR_URL }}:${{ matrix.tag }}
-      - 
+      -
         if: "${{ env.DOCR_PAT != '' && env.DOCR_URL != '' }}"
         name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ env.DOCR_PAT }}
-      - 
+      -
         if: "${{ env.DOCR_PAT != '' && env.DOCR_URL != '' }}"
         name: Login to Digital Ocean Container Registry
         run: doctl registry login -t ${{ env.DOCR_PAT }}
-      - 
+      -
         if: "${{ env.DOCR_PAT != '' && env.DOCR_URL != '' }}"
         name: Add tag for Digital Ocean Container Registry
         run: echo "DOCR_TAG=${DOCKER_TAG}" >> $GITHUB_ENV
         env:
           DOCKER_TAG: ${{ env.DOCR_URL }}:${{ matrix.tag }}
-      - 
+      -
         name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
@@ -95,3 +95,15 @@ jobs:
             ${{ env.DOCKERHUB_TAG }}
             ${{ env.DOCR_TAG }}
             ${{ env.GHCR_TAG }}
+      -
+        name: Build and push Docker image (alpine)
+        uses: docker/build-push-action@v2
+        with:
+          build-args: |
+            RUBY_BUILD_VERSION=${{ matrix.tag }}
+          context: ./build/alpine
+          push: true
+          tags: |
+            ${{ env.DOCKERHUB_TAG }}-alpine
+            ${{ env.DOCR_TAG }}-alpine
+            ${{ env.GHCR_TAG }}-alpine
