@@ -1,5 +1,8 @@
 ARG RUBY_VERSION
+
 FROM ruby:$RUBY_VERSION
+
+ARG NODE_MAJOR_VERSION=16
 
 LABEL org.opencontainers.image.source "https://github.com/tenshiamd/docker-ruby"
 
@@ -9,12 +12,13 @@ ENV APP_HOME /var/www
 ENV BUNDLE_GEMFILE $APP_HOME/Gemfile
 ENV BUNDLE_JOBS 3
 ENV BUNDLE_PATH /bundle
+ENV NODE_MAJOR_VERSION ${NODE_MAJOR_VERSION}
 
 RUN gem install bundler -v "~>1.0"
 RUN gem install bundler-audit
 
 ## Installs NodeJS and NPM
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN curl -sL "https://deb.nodesource.com/setup_${NODE_MAJOR_VERSION}.x" | bash -
 RUN apt-get update -qq && apt-get install -y build-essential nodejs
 
 ## Installs Yarn

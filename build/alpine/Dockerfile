@@ -1,6 +1,7 @@
 ARG RUBY_VERSION
+ARG NODE_MAJOR_VERSION=16
 
-FROM node:16-alpine AS node
+FROM node:$NODE_MAJOR_VERSION-alpine AS node
 FROM ruby:$RUBY_VERSION-alpine
 
 LABEL org.opencontainers.image.source "https://github.com/tenshiamd/docker-ruby"
@@ -11,6 +12,7 @@ ENV APP_HOME /var/www
 ENV BUNDLE_GEMFILE $APP_HOME/Gemfile
 ENV BUNDLE_JOBS 3
 ENV BUNDLE_PATH /bundle
+ENV NODE_MAJOR_VERSION ${NODE_MAJOR_VERSION}
 
 RUN gem install bundler -v "~>1.0"
 RUN gem install bundler-audit
