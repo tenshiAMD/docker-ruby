@@ -32,12 +32,16 @@ jobs:
       matrix:
         experimental: [false]
         tag:
+          - "3.1"
+          - "3.1-alpine"
           - "3.0"
+          - "3.0-alpine"
           - "2.7"
+          - "2.7-alpine"
         include:
           - tag: "latest"
             experimental: true
-          - tag: "3.1"
+          - tag: "alpine"
             experimental: true
     steps:
       -
@@ -87,6 +91,7 @@ jobs:
         env:
           DOCKER_TAG: ${{ env.DOCR_URL }}:${{ matrix.tag }}
       -
+        if: "${{ !endsWith(matrix.tag, 'alpine') }}"
         name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
@@ -99,7 +104,8 @@ jobs:
             ${{ env.DOCR_TAG }}
             ${{ env.GHCR_TAG }}
       -
-        name: Build and push Docker image (alpine)
+        if: "${{ endsWith(matrix.tag, 'alpine') }}"
+        name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           build-args: |
@@ -107,6 +113,6 @@ jobs:
           context: ./build/alpine
           push: true
           tags: |
-            ${{ env.DOCKERHUB_TAG }}-alpine
-            ${{ env.DOCR_TAG }}-alpine
-            ${{ env.GHCR_TAG }}-alpine
+            ${{ env.DOCKERHUB_TAG }}
+            ${{ env.DOCR_TAG }}
+            ${{ env.GHCR_TAG }}

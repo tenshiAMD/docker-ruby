@@ -2,7 +2,7 @@ ARG RUBY_VERSION
 ARG NODE_MAJOR_VERSION=16
 
 FROM node:$NODE_MAJOR_VERSION-alpine AS node
-FROM ruby:$RUBY_VERSION-alpine
+FROM ruby:$RUBY_VERSION
 
 LABEL org.opencontainers.image.source "https://github.com/tenshiamd/docker-ruby"
 
