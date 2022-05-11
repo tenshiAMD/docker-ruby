@@ -14,7 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  DOCKERHUB_PAT: ${{ secrets.DOCKERHUB_PAT }}
   DOCKERHUB_URL: ${{ secrets.DOCKERHUB_URL }}
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCR_PAT: ${{ secrets.DOCR_PAT }}
   DOCR_URL: ${{ secrets.DOCR_URL }}
   GHCR_PAT: ${{ secrets.GHCR_PAT }}
