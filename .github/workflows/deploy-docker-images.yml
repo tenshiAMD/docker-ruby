@@ -3,7 +3,8 @@ name:  Deploy docker images to multiple registries
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 1 * *"
+    - cron: "0 0 14 * *"
+    - cron: "0 0 28 * *"
   push:
     branches:
       - stable
